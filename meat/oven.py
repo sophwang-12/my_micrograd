@@ -1,3 +1,5 @@
+import math
+
 class Value:
   def __init__(self, data, _children=(), _op='', label=''):
     self.data = data
@@ -66,7 +68,7 @@ class Value:
     out._backward = _backward
     return out
 
-def relu(self):
+  def relu(self):
     out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')
     def _backward():
         self.grad += (out.data > 0) * out.grad   # slope is 1 if positive, else 0
