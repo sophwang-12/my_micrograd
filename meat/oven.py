@@ -58,6 +58,21 @@ class Value:
     for node in reversed(topological_ord):
       node._backward()
 
+  def tanh(self):
+    t = (math.exp(2*self.data) - 1) / (math.exp(2*self.data) + 1)
+    out = Value(t, (self,), 'tanh')
+    def _backward():
+        self.grad += (1 - t**2) * out.grad   # derivative of tanh
+    out._backward = _backward
+    return out
+
+def relu(self):
+    out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')
+    def _backward():
+        self.grad += (out.data > 0) * out.grad   # slope is 1 if positive, else 0
+    out._backward = _backward
+    return out
+
   def __rmul__(self, other):
     return self * other
 
