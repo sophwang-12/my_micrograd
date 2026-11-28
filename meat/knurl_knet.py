@@ -2,7 +2,7 @@ import random
 from meat.oven import Value
 
 class Neuron:
-  def __init__(self, nin):
+  def __init__(self, nin, unlinearizer):
     self.w = [Value(random.uniform(-1,1)) for _ in range(nin)]
     self.b = Value(random.uniform(-1,1))
 
@@ -17,8 +17,8 @@ class Neuron:
     return self.w + [self.b]
 
 class Layer:
-  def __init__(self, ninputs, nneur):
-    self.neurons = [Neuron(ninputs) for _ in range(nneur)]
+  def __init__(self, ninputs, nneurm, unlinearizer):
+    self.neurons = [Neuron(ninputs, unlinearizer=1) for _ in range(nneur)]
 
   def __call__(self, x):
     outs = [n(x) for n in self.neurons]
@@ -28,7 +28,7 @@ class Layer:
     return [p for n in self.neurons for p in n.parameters()]
 
 class MLP:
-  def __init__(self, ninputs, nneur_per_layer):
+  def __init__(self, ninputs, nneur_per_layer, unlinearizer=1):
     sz = [ninputs] + nneur_per_layer
     self.layers = [Layer(sz[i], sz[i+1]) for i in range(len(nneur_per_layer))]
 
