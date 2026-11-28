@@ -8,9 +8,7 @@ class Neuron:
 
   def __call__(self, x):
     a = sum((wi * xi for wi, xi in zip(self.w, x)), self.b)
-    out = a.tanh()
-    print(self.w)
-    print(self.b)
+    out = a.relu() if self.unlinearizer == 1 else a.tanh()
     return out
 
   def parameters(self):
